@@ -1,4 +1,5 @@
 #include "playerclass.h"
+//nie u¿ywabe narazie nie dzia³a
 
     PlayerClass(sf::Vector2f size){setSize(size);}
     void PlayerClass::setDir_x(float D_x){dir_x_=D_x;}

@@ -7,7 +7,7 @@
 #include <time.h>
 #include <cmath>
 #include <vector>
-
+//nie u¿ywabe narazie nie dzia³a
 class PlayerClass : public sf::RectangleShape
 {
 public:
