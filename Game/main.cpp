@@ -42,7 +42,8 @@ public:
             if(rectangle_bounds.top+rectangle_bounds.height>bound_y_bottm_)
             {
             this->move(0,(float)-400*dir_y_*time);
-           // dir_y_=0;
+            dir_y_=0;
+            floor_check_=false;
             }
             for(auto &obstacle : ObstacleColisions_)
             {
@@ -51,7 +52,8 @@ public:
                         &&(rectangle_bounds.left+rectangle_bounds.width>obstacle.left+obstacle.width||rectangle_bounds.left+rectangle_bounds.width>obstacle.left))
                 {
                     this->move(0,(float)-400*dir_y_*time);
-                   // dir_y_=0;
+                    dir_y_=0;
+                    floor_check_=false;
                 }
             }
 
@@ -87,7 +89,7 @@ public:
             {
             this->move((float)-250*dir_x_*time,0);
 
-           // dir_x_=0;
+            dir_x_=0;
             }
             for(auto &obstacle : ObstacleColisions_)
             {
@@ -97,7 +99,7 @@ public:
                 {
                     this->move((float)-250*dir_x_*time,0);
 
-                   // dir_x_=0;
+                    dir_x_=0;
                 }
             }
 
@@ -107,7 +109,7 @@ public:
             if(rectangle_bounds.left<bound_x_left_)
             {
                 this->move((float)-250*dir_x_*time,0);
-               // dir_x_=0;
+                dir_x_=0;
             }
             for(auto &obstacle : ObstacleColisions_)
             {
@@ -116,7 +118,7 @@ public:
                         &&(rectangle_bounds.top+rectangle_bounds.height>obstacle.top+obstacle.height||rectangle_bounds.top+rectangle_bounds.height>obstacle.top))
                 {
                     this->move((float)-250*dir_x_*time,0);
-                  //  dir_x_=0;
+                    dir_x_=0;
                 }
             }
 
