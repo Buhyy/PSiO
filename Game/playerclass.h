@@ -2,8 +2,8 @@
 #define PLAYERCLASS_H
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-
-class PlayerClass : public sf::Sprite
+#include <character.h>
+class PlayerClass : public Character
 {
 public:
     PlayerClass();
@@ -12,6 +12,7 @@ public:
     void setObstacleColisions( std::vector<sf::FloatRect> obstacle_colisions);
     void jump(const sf::Time &elapsed);
     void animate(const sf::Time &elapsed);
+    void gravity(const sf::Time &elapsed);
 private:
     float Time_;
     float dir_x_;

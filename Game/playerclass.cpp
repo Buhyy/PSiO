@@ -131,3 +131,20 @@ void PlayerClass::animate(const sf::Time &elapsed){
     }
 
 };
+void PlayerClass::gravity(const sf::Time &elapsed)
+{
+    float time = elapsed.asSeconds();
+    sf::FloatRect rectangle_bounds = this->getGlobalBounds();
+        this->move(0,(float)100*time);
+          if(rectangle_bounds.top+rectangle_bounds.height>(float)32*21)
+            {
+            this->move(0,(float)-200*time);
+            }
+            for(auto &obstacle : ObstacleColisions_)
+            {
+                if(rectangle_bounds.top+rectangle_bounds.height>obstacle.top && rectangle_bounds.top+rectangle_bounds.height<obstacle.top+obstacle.height&&(rectangle_bounds.left<obstacle.left||rectangle_bounds.left<obstacle.left+obstacle.width)&&(rectangle_bounds.left+rectangle_bounds.width>obstacle.left+obstacle.width||rectangle_bounds.left+rectangle_bounds.width>obstacle.left))
+                {
+                    this->move(0,(float)-200*time);
+                }
+            }
+}
