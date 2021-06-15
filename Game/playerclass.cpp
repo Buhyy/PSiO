@@ -3,6 +3,7 @@
 PlayerClass::PlayerClass()
 {
 
+    health_=100;
     if (!Texture.loadFromFile("Patatek.png"))
     {
         std::cout << "Could not load texture" << std::endl;
@@ -153,4 +154,12 @@ void PlayerClass::gravity(const sf::Time &elapsed)
                     this->move(0,(float)-200*time);
                 }
             }
+}
+int PlayerClass::health()
+{
+    return health_;
+};
+void PlayerClass::addHp(int bonus)
+{
+    health_+=bonus;
 }

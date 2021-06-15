@@ -12,3 +12,7 @@ void Character::gravity()
 {
 
 }
+void Character::animate()
+{
+
+}

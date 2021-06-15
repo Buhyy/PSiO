@@ -9,6 +9,7 @@
 #include "character.h"
 #include "room.h"
 #include "enemy.h"
+#include "item.h"
 int main()
 {
     // create the window
@@ -31,6 +32,11 @@ int main()
 
     PlayerClass player;
     Enemy enemy;
+    std::vector<std::unique_ptr<Character>> obstacles;
+    std::vector<std::unique_ptr<Item>> items;
+    Item health;
+    health.setPosition(100,100);
+    items.emplace_back(std::make_unique<Item>(health));
     player.setPosition(100,100);
     enemy.setPosition(200,200);
     sf::Texture SkyTexture;
@@ -102,7 +108,7 @@ player.setObstacleColisions(ObstacleColisions);
     while (window.isOpen()) {
         sf::Time elapsed = clock.restart();
         sf::Event event;
-
+    std::cout<<player.health()<<std::endl;
 
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
@@ -224,7 +230,11 @@ player.setObstacleColisions(ObstacleColisions);
                WallSprite.setScale(0.5,0.5);
                window.draw(WallSprite);
            }
-
+            if(!health.taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(player.getGlobalBounds().left+(player.getGlobalBounds().width/2))),2)+pow((health.getGlobalBounds().top+(health.getGlobalBounds().height/2))-(health.getGlobalBounds().top+(health.getGlobalBounds().height/2)),2))<10)
+            {
+                health.take();
+                player.addHp(health.hp());
+            }
            DoorSprite.setPosition(992,608);
            window.draw(DoorSprite);
            DoorSprite.setPosition(0,608);
@@ -235,6 +245,8 @@ player.setObstacleColisions(ObstacleColisions);
            enemy.animate(elapsed);
           // enemy.gravity(elapsed);
            //player.move(0,(float)100*elapsed.asSeconds());
+           if(!health.taken())
+           window.draw(health);
            window.draw(enemy);
            window.draw(player);
            window.display();

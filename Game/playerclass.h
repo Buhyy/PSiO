@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "character.h"
+#include "enemy.h"
 class PlayerClass : public Character
 {
 public:
@@ -14,6 +15,8 @@ public:
     void jump(const sf::Time &elapsed);
     void animate(const sf::Time &elapsed);
     void gravity(const sf::Time &elapsed);
+    int health();
+    void addHp(int bonus);
 private:
     float Time_;
     float dir_x_;
