@@ -8,6 +8,7 @@
 #include "playerclass.h"
 #include "character.h"
 #include "room.h"
+#include "enemy.h"
 int main()
 {
     // create the window
@@ -29,7 +30,9 @@ int main()
 
 
     PlayerClass player;
+    Enemy enemy;
     player.setPosition(100,100);
+    enemy.setPosition(200,200);
     sf::Texture SkyTexture;
     if (!SkyTexture.loadFromFile("sky.png")) {
         std::cerr << "Could not load texture" << std::endl;
@@ -228,9 +231,14 @@ player.setObstacleColisions(ObstacleColisions);
            window.draw(DoorSprite);
            player.animate(elapsed);
            player.gravity(elapsed);
+           enemy.setTarget(sf::Vector2f(player.getGlobalBounds().left+(player.getGlobalBounds().width/2),player.getGlobalBounds().top+(player.getGlobalBounds().height/2)));
+           enemy.animate(elapsed);
+          // enemy.gravity(elapsed);
            //player.move(0,(float)100*elapsed.asSeconds());
+           window.draw(enemy);
            window.draw(player);
            window.display();
+
            //std::cout<<player.getOrigin().x<<std::endl<<player.getOrigin().y<<std::endl;
 }
     return 0;

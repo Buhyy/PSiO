@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         character.cpp \
+        enemy.cpp \
         main.cpp \
         playerclass.cpp \
         room.cpp
@@ -18,5 +19,6 @@ SOURCES += \
 
         HEADERS += \
             character.h \
+            enemy.h \
             playerclass.h \
             room.h
