@@ -7,6 +7,8 @@ class Character : public sf::Sprite
 {
 public:
     Character();
+    virtual ~Character();
+    virtual void gravity();
 };
 
 #endif // CHARACTER_H

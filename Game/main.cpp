@@ -6,27 +6,8 @@
 #include <cmath>
 #include <vector>
 #include "playerclass.h"
-
-
-void gravity( PlayerClass &player,const sf::Time &elapsed,std::vector<sf::FloatRect> ObstacleColisions)
-{
-    float time = elapsed.asSeconds();
-    sf::FloatRect rectangle_bounds = player.getGlobalBounds();
-        player.move(0,(float)100*time);
-          if(rectangle_bounds.top+rectangle_bounds.height>(float)32*21)
-            {
-            player.move(0,(float)-200*time);
-            }
-            for(auto &obstacle : ObstacleColisions)
-            {
-                if(rectangle_bounds.top+rectangle_bounds.height>obstacle.top && rectangle_bounds.top+rectangle_bounds.height<obstacle.top+obstacle.height
-                        &&(rectangle_bounds.left<obstacle.left||rectangle_bounds.left<obstacle.left+obstacle.width)
-                        &&(rectangle_bounds.left+rectangle_bounds.width>obstacle.left+obstacle.width||rectangle_bounds.left+rectangle_bounds.width>obstacle.left))
-                {
-                    player.move(0,(float)-200*time);
-                }
-            }
-}
+#include "character.h"
+#include "room.h"
 int main()
 {
     // create the window
@@ -46,14 +27,14 @@ int main()
 //playerText.setFont(arial);
 //sf::Font font;
 
+
     PlayerClass player;
-    player.setPosition(100,600);
+    player.setPosition(100,100);
     sf::Texture SkyTexture;
     if (!SkyTexture.loadFromFile("sky.png")) {
         std::cerr << "Could not load texture" << std::endl;
         return 1;
     }
-
     sf::Sprite SkySprite;
     SkySprite.setTexture(SkyTexture);
     sf::Texture WallTexture;
@@ -90,8 +71,8 @@ int main()
 
     std::vector<sf::Vector2f> ObstaclesPositions;
     std::vector<sf::FloatRect> ObstacleColisions;
-    RoomClass room1(1),room2(2),room3(3);
-    std::vector<RoomClass> Rooms;
+    Room room1(1),room2(2),room3(3);
+    std::vector<Room> Rooms;
     Rooms.emplace_back(room1);
     Rooms.emplace_back(room2);
     Rooms.emplace_back(room3);
@@ -246,10 +227,11 @@ player.setObstacleColisions(ObstacleColisions);
            DoorSprite.setPosition(0,608);
            window.draw(DoorSprite);
            player.animate(elapsed);
-           gravity(player,elapsed,ObstacleColisions);
+           player.gravity(elapsed);
            //player.move(0,(float)100*elapsed.asSeconds());
            window.draw(player);
            window.display();
+           //std::cout<<player.getOrigin().x<<std::endl<<player.getOrigin().y<<std::endl;
 }
     return 0;
 }

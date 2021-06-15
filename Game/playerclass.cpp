@@ -2,6 +2,12 @@
 
 PlayerClass::PlayerClass()
 {
+
+    if (!Texture.loadFromFile("sky.png"))
+    {
+        std::cout << "Could not load texture" << std::endl;
+    }
+    this->setTexture(Texture);
     Time_=0;
     dir_x_=0;
     dir_y_=0;
