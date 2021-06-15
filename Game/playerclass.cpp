@@ -3,7 +3,7 @@
 PlayerClass::PlayerClass()
 {
 
-    if (!Texture.loadFromFile("sky.png"))
+    if (!Texture.loadFromFile("Patatek.png"))
     {
         std::cout << "Could not load texture" << std::endl;
     }

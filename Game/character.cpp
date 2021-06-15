@@ -8,7 +8,7 @@ Character::~Character()
 {
 
 }
-void gravity()
+void Character::gravity()
 {
 
 }
