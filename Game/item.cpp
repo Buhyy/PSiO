@@ -14,9 +14,18 @@ this->setScale(0.2,0.2);
 int Item::hp(){
     return hp_;
 }
+int Item::heal(){
+    return heal_;
+}
+int Item::dmg(){
+    return dmg_;
+}
+int Item::speed(){
+    return speed_;
+}
 void Item::take()
 {
-    taken_=!taken_;
+    taken_=false;
 }
 bool Item::taken()
 {

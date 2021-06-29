@@ -8,13 +8,16 @@ class Item : public sf::Sprite
 public:
     Item();
     int hp();
+    int dmg();
+    int speed();
+    int heal();
     void take();
     bool taken();
 private:
-    int heal;
+    int heal_;
     int hp_;
-    int dmg;
-    int speed;
+    int dmg_;
+    int speed_;
     sf::Texture Texture;
     bool taken_;
 };

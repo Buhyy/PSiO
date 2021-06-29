@@ -35,7 +35,7 @@ int main()
     std::vector<std::unique_ptr<Character>> obstacles;
     std::vector<std::unique_ptr<Item>> items;
     Item health;
-    health.setPosition(100,100);
+    health.setPosition(400,400);
     items.emplace_back(std::make_unique<Item>(health));
     player.setPosition(100,100);
     enemy.setPosition(200,200);
@@ -230,7 +230,7 @@ player.setObstacleColisions(ObstacleColisions);
                WallSprite.setScale(0.5,0.5);
                window.draw(WallSprite);
            }
-            if(!health.taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(player.getGlobalBounds().left+(player.getGlobalBounds().width/2))),2)+pow((health.getGlobalBounds().top+(health.getGlobalBounds().height/2))-(health.getGlobalBounds().top+(health.getGlobalBounds().height/2)),2))<10)
+            if(!health.taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(health.getGlobalBounds().left+(health.getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(health.getGlobalBounds().top+(health.getGlobalBounds().height/2)),2))<70)
             {
                 health.take();
                 player.addHp(health.hp());
