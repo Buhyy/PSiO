@@ -2,6 +2,7 @@
 
 Room::Room(int type)
 {
+    variant_=type;
     is_cleared_=false;
     switch(type)
     {
@@ -32,7 +33,7 @@ Room::Room(int type)
     case 2:
     {
          std::vector<int>layer = {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3};
-         std::vector<int>layer3 = {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3};
+         std::vector<int>layer3 = {3,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3};
         layout_.emplace_back(layer);
         for(int i=0;i<30;i++)//
         {
@@ -75,4 +76,8 @@ bool Room::is_cleared()
 void Room::set_is_cleared()
 {
     is_cleared_=true;
+}
+int Room::variant()
+{
+    return  variant_;
 }

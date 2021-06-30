@@ -23,9 +23,12 @@ int Item::dmg(){
 int Item::speed(){
     return speed_;
 }
+int Item::armour(){
+    return armour_;
+}
 void Item::take()
 {
-    taken_=false;
+    taken_=!taken_;
 }
 bool Item::taken()
 {

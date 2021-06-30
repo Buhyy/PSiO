@@ -5,6 +5,7 @@
 #include <iostream>
 #include "character.h"
 #include "enemy.h"
+#include "weapon.h"
 class PlayerClass : public Character
 {
 public:
@@ -16,7 +17,18 @@ public:
     void animate(const sf::Time &elapsed);
     void gravity(const sf::Time &elapsed);
     int health();
+    int health_max();
     void addHp(int bonus);
+    int dmg();
+    void adddmg(int bonus);
+    int armour();
+    void addarmour(int bonus);
+    int speed();
+    void addspeed(int bonus);
+    void heal(int bonus);
+    void weapon_place_r();
+    void weapon_place_l();
+    weapon weapon_eq;
 private:
     float Time_;
     float dir_x_;
@@ -32,9 +44,11 @@ private:
     sf::Texture Texture;
 
     int health_;
+    int health_max_;
     int dmg_;
     int speed_;
     int armour_;
+
 
 };
 #endif // PLAYERCLASS_H

@@ -5,11 +5,13 @@ CONFIG -= qt
 
 SOURCES += \
         character.cpp \
+        chest.cpp \
         enemy.cpp \
         item.cpp \
         main.cpp \
         playerclass.cpp \
-        room.cpp
+        room.cpp \
+        weapon.cpp
         INCLUDEPATH += "C:/SFML-2.5.1/include"
         LIBS += -L"C:/SFML-2.5.1/lib"
         CONFIG(debug, debug|release){
@@ -20,7 +22,9 @@ SOURCES += \
 
         HEADERS += \
             character.h \
+    chest.h \
             enemy.h \
     item.h \
             playerclass.h \
-            room.h
+            room.h \
+    weapon.h

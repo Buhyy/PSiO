@@ -56,3 +56,18 @@ void Enemy::gravity(const sf::Time &elapsed)
             }
 }
 void Enemy::setTarget(sf::Vector2f Targ){target=Targ;}
+int Enemy::room_number()
+{
+    return room_number_;
+}
+void Enemy::room_number_set(int number)
+{
+    room_number_=number;
+}
+bool Enemy::is_dead()
+{
+    return is_dead_;
+}
+void Enemy::kill(){
+    is_dead_=true;
+}

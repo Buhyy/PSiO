@@ -11,6 +11,7 @@ public:
     int dmg();
     int speed();
     int heal();
+    int armour();
     void take();
     bool taken();
 private:
@@ -18,8 +19,10 @@ private:
     int hp_;
     int dmg_;
     int speed_;
+    int armour_;
     sf::Texture Texture;
     bool taken_;
+    int room_nuber_;
 };
 
 #endif // ITEM_H

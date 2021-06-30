@@ -13,6 +13,10 @@ public:
     void setTarget(sf::Vector2f Targ);
     void animate(const sf::Time &elapsed);
     void gravity(const sf::Time &elapsed);
+    int room_number();
+    void room_number_set(int number);
+    bool is_dead();
+    void kill();
 private:
     float Time_;
     sf::Vector2f position_;
@@ -30,6 +34,9 @@ private:
     int dmg_;
     int speed_;
     int armour_;
+
+    bool is_dead_;
+    int room_number_;
 
 };
 #endif // PLAYERCLASS_H

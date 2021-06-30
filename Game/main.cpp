@@ -10,6 +10,8 @@
 #include "room.h"
 #include "enemy.h"
 #include "item.h"
+#include "chest.h"
+#include "weapon.h"
 int main()
 {
     // create the window
@@ -31,14 +33,20 @@ int main()
 
 
     PlayerClass player;
-    Enemy enemy;
-    std::vector<std::unique_ptr<Character>> obstacles;
+    //Enemy enemy;
+    std::vector<std::unique_ptr<Character>> enemies;
     std::vector<std::unique_ptr<Item>> items;
     Item health;
     health.setPosition(400,400);
     items.emplace_back(std::make_unique<Item>(health));
+
+    //enemy.setPosition(200,200);
+
+
+    weapon sword;
+    player.weapon_eq=sword;
     player.setPosition(100,100);
-    enemy.setPosition(200,200);
+    player.weapon_place_r();
     sf::Texture SkyTexture;
     if (!SkyTexture.loadFromFile("sky.png")) {
         std::cerr << "Could not load texture" << std::endl;
@@ -78,13 +86,19 @@ int main()
     DoorSprite.setTexture(DoorTexture);
 
 
+
+
     std::vector<sf::Vector2f> ObstaclesPositions;
     std::vector<sf::FloatRect> ObstacleColisions;
-    Room room1(1),room2(2),room3(3);
-    std::vector<Room> Rooms;
-    Rooms.emplace_back(room1);
-    Rooms.emplace_back(room2);
-    Rooms.emplace_back(room3);
+     std::vector<Room> Rooms;
+
+    for(int i=0;i<10;i++)
+    {
+        int variant=rand() % 3+1;
+        Room room1(variant);
+        Rooms.emplace_back(room1);
+    }
+
     int Curent_Room_Number=0;
     for(int i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
     {
@@ -103,6 +117,22 @@ int main()
             }
      }
 player.setObstacleColisions(ObstacleColisions);
+
+   for(int i = 0;i<=Rooms.size();i++)
+   {
+     enemies.emplace_back(std::make_unique<Enemy>());
+     enemies[i*3]->setPosition(200,200);
+     enemies[i*3]->room_number_set(i);
+     enemies.emplace_back(std::make_unique<Enemy>());
+     enemies[i*3+1]->setPosition(400,200);
+     enemies[i*3+1]->room_number_set(i);
+     enemies.emplace_back(std::make_unique<Enemy>());
+     enemies[i*3+2]->setPosition(300,200);
+     enemies[i*3+2]->room_number_set(i);
+   }
+
+
+
           sf::Clock clock;
 
     while (window.isOpen()) {
@@ -205,7 +235,7 @@ player.setObstacleColisions(ObstacleColisions);
 
 
         window.clear(sf::Color::White);
-        //   window.draw(playerText);
+
            for(int i=0;i<Rooms[Curent_Room_Number].layout().size();i++)
            {
                    for(int j =0; j<Rooms[Curent_Room_Number].layout()[i].size();j++)
@@ -236,19 +266,32 @@ player.setObstacleColisions(ObstacleColisions);
                 player.addHp(health.hp());
             }
            DoorSprite.setPosition(992,608);
+           if(Curent_Room_Number!=Rooms.size()-1)
            window.draw(DoorSprite);
            DoorSprite.setPosition(0,608);
+           if(Curent_Room_Number!=0)
            window.draw(DoorSprite);
            player.animate(elapsed);
            player.gravity(elapsed);
-           enemy.setTarget(sf::Vector2f(player.getGlobalBounds().left+(player.getGlobalBounds().width/2),player.getGlobalBounds().top+(player.getGlobalBounds().height/2)));
-           enemy.animate(elapsed);
-          // enemy.gravity(elapsed);
+           for(auto &enemy : enemies)
+           {
+               enemy->setTarget(sf::Vector2f(player.getGlobalBounds().left+(player.getGlobalBounds().width/2),player.getGlobalBounds().top+(player.getGlobalBounds().height/2)));
+               if(enemy->room_number()==Curent_Room_Number && enemy->is_dead()==false)
+               {
+               enemy->animate(elapsed);
+               window.draw(*enemy);
+               }
+           }
+
+           // window.draw(playerText);
+           // enemy.gravity(elapsed);
            //player.move(0,(float)100*elapsed.asSeconds());
+
            if(!health.taken())
            window.draw(health);
-           window.draw(enemy);
+
            window.draw(player);
+           window.draw(player.weapon_eq);
            window.display();
 
            //std::cout<<player.getOrigin().x<<std::endl<<player.getOrigin().y<<std::endl;

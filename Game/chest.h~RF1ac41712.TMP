@@ -1,0 +1,14 @@
+#ifndef CHEST_H
+#define CHEST_H
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include "item.h"
+
+class chest
+{
+public:
+    chest();
+};
+
+#endif // CHEST_H
