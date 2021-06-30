@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Functions.cpp \
         character.cpp \
         chest.cpp \
         enemy.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
         }
 
         HEADERS += \
+    Functions.h \
             character.h \
     chest.h \
             enemy.h \

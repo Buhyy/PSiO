@@ -14,6 +14,8 @@ public:
     int armour();
     void take();
     bool taken();
+    int room_number();
+    void room_number_set(int number);
 private:
     int heal_;
     int hp_;
@@ -22,7 +24,7 @@ private:
     int armour_;
     sf::Texture Texture;
     bool taken_;
-    int room_nuber_;
+    int room_number_;
 };
 
 #endif // ITEM_H

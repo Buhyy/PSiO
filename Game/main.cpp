@@ -12,6 +12,7 @@
 #include "item.h"
 #include "chest.h"
 #include "weapon.h"
+#include "Functions.h"
 int main()
 {
     // create the window
@@ -20,52 +21,39 @@ int main()
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "My window");//sf::Style::Fullscreen
 
 //sf::Clock clock;
-//sf::String playerInput="dziala";
-//sf::Text playerText;
-//playerText.setString(playerInput);
-//playerText.setPosition(100,100);
-//playerText.setCharacterSize(10);
-//playerText.setColor(sf::Color::Black);
-//sf::Font arial;
-//arial.loadFromFile("arial.ttf");
-//playerText.setFont(arial);
-//sf::Font font;
+
 
 
     PlayerClass player;
     //Enemy enemy;
     std::vector<std::unique_ptr<Character>> enemies;
     std::vector<std::unique_ptr<Item>> items;
-    Item health;
-    health.setPosition(400,400);
-    items.emplace_back(std::make_unique<Item>(health));
-
-    //enemy.setPosition(200,200);
+    std::vector<std::unique_ptr<chest>> chests;
 
 
     weapon sword;
     player.weapon_eq=sword;
     player.setPosition(100,100);
     player.weapon_place_r();
+
+
+
     sf::Texture SkyTexture;
     if (!SkyTexture.loadFromFile("sky.png")) {
-        std::cerr << "Could not load texture" << std::endl;
-        return 1;
+        std::cout << "something wrong" << std::endl;
     }
     sf::Sprite SkySprite;
     SkySprite.setTexture(SkyTexture);
     sf::Texture WallTexture;
     if (!WallTexture.loadFromFile("wall.png")) {
-        std::cerr << "Could not load texture" << std::endl;
-        return 1;
+        std::cout << "something wrong" << std::endl;
     }
 
     sf::Sprite WallSprite;
     WallSprite.setTexture(WallTexture);
     sf::Texture DirtTexture;
     if (!DirtTexture.loadFromFile("dirt.png")) {
-        std::cerr << "Could not load texture" << std::endl;
-        return 1;
+        std::cout << "something wrong" << std::endl;
     }
 
     sf::Sprite DirtSprite;
@@ -73,13 +61,12 @@ int main()
 
     sf::Texture PlayerTexture;
     if (!PlayerTexture.loadFromFile("Patatek.png")) {
-        std::cerr << "Could not load texture" << std::endl;
+        std::cout << "something wrong" << std::endl;
     }
     player.setTexture(PlayerTexture);
     sf::Texture DoorTexture;
     if (!DoorTexture.loadFromFile("Doorpng.png")) {
-        std::cerr << "Could not load texture" << std::endl;
-        return 1;
+        std::cout << "something wrong" << std::endl;
     }
 
     sf::Sprite DoorSprite;
@@ -130,15 +117,25 @@ player.setObstacleColisions(ObstacleColisions);
      enemies[i*3+2]->setPosition(300,200);
      enemies[i*3+2]->room_number_set(i);
    }
-
-
-
+   for(int i = 0;i<=Rooms.size();i++)
+   {
+     chests.emplace_back(std::make_unique<chest>());
+     chests[i]->setPosition(200,200);
+     chests[i]->room_number_set(i);
+    }//itemik.setPosition(this->getGlobalBounds().left+this->getGlobalBounds().width/2,this->getGlobalBounds().top);
+   for(int i = 0;i<=Rooms.size();i++)
+   {
+     items.emplace_back(std::make_unique<Item>());
+     items[i]->setPosition(200,200);
+     items[i]->room_number_set(i);
+     chests[i]->itemik=*items[i];
+     chests[i]->itemik.setPosition(chests[i]->getGlobalBounds().left+chests[i]->getGlobalBounds().width/2,chests[i]->getGlobalBounds().top);
+    }
           sf::Clock clock;
 
     while (window.isOpen()) {
         sf::Time elapsed = clock.restart();
         sf::Event event;
-    std::cout<<player.health()<<std::endl;
 
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
@@ -162,6 +159,7 @@ player.setObstacleColisions(ObstacleColisions);
                                    if(Curent_Room_Number<Rooms.size()-1)
                                    {
                                  Curent_Room_Number++;
+                                 player.weapon_place_r();
                                  player.setPosition(70,610);
                                  ObstacleColisions.clear();
                                  ObstaclesPositions.clear();
@@ -189,6 +187,7 @@ player.setObstacleColisions(ObstacleColisions);
                                    if(Curent_Room_Number>0)
                                    {
                                  Curent_Room_Number--;
+                                 player.weapon_place_l();
                                  player.setPosition(980,610);
                                  ObstacleColisions.clear();
                                  ObstaclesPositions.clear();
@@ -211,6 +210,18 @@ player.setObstacleColisions(ObstacleColisions);
                              player.setObstacleColisions(ObstacleColisions);
                                    }
                                 }
+
+
+                                if(chests[Curent_Room_Number]->is_oppened()&& !Rooms[Curent_Room_Number].is_cleared() && (pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(chests[Curent_Room_Number]->getGlobalBounds().left+(chests[Curent_Room_Number]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(chests[Curent_Room_Number]->getGlobalBounds().top+(chests[Curent_Room_Number]->getGlobalBounds().height/2)),2))<100)
+                                {
+                                    chests[Curent_Room_Number]->open();
+                                    std::cout<<"open";
+                                }
+
+
+
+
+
                             }
                 }
             if (event.type == sf::Event::KeyReleased) {
@@ -260,11 +271,18 @@ player.setObstacleColisions(ObstacleColisions);
                WallSprite.setScale(0.5,0.5);
                window.draw(WallSprite);
            }
-            if(!health.taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(health.getGlobalBounds().left+(health.getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(health.getGlobalBounds().top+(health.getGlobalBounds().height/2)),2))<70)
-            {
-                health.take();
-                player.addHp(health.hp());
-            }
+//           for(int i=0; i<Rooms.size(); i++)
+//           {
+//            if(!chests[i]->is_oppened() && Curent_Room_Number==i &&!items[i]->taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(items[i]->getGlobalBounds().left+(items[i]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(items[i]->getGlobalBounds().top+(items[i]->getGlobalBounds().height/2)),2))<70)
+//            {
+//                items[i]->take();
+//                player.addHp(items[i]->hp());
+//                player.adddmg(items[i]->dmg());
+//                player.addarmour(items[i]->armour());
+//                player.heal(items[i]->heal());
+//                player.addspeed(items[i]->speed());
+//            }
+//           }
            DoorSprite.setPosition(992,608);
            if(Curent_Room_Number!=Rooms.size()-1)
            window.draw(DoorSprite);
@@ -282,16 +300,37 @@ player.setObstacleColisions(ObstacleColisions);
                window.draw(*enemy);
                }
            }
+           for(auto &chest : chests)
+           {
+               if(chest->room_number()==Curent_Room_Number)
+               {
+               //enemy->animate(elapsed);
+               window.draw(*chest);
+//               if(!chest->is_oppened() && !chest->itemik.taken())
+//               {
+//                   window.draw(chest->itemik);
+//               }
+              }
+           }
+           for(int i=0; i<Rooms.size(); i++)
+           {
+            if(!chests[i]->is_oppened() && Curent_Room_Number==i &&!items[i]->taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(items[i]->getGlobalBounds().left+(items[i]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(items[i]->getGlobalBounds().top+(items[i]->getGlobalBounds().height/2)),2))<70)
+            {
+                items[i]->take();
+                player.addHp(items[i]->hp());
+                player.adddmg(items[i]->dmg());
+                player.addarmour(items[i]->armour());
+                player.heal(items[i]->heal());
+                player.addspeed(items[i]->speed());
+            }
+            if(!chests[i]->is_oppened() && Curent_Room_Number==i &&!items[i]->taken())
+                window.draw(*items[i]);
+           }
 
-           // window.draw(playerText);
            // enemy.gravity(elapsed);
-           //player.move(0,(float)100*elapsed.asSeconds());
-
-           if(!health.taken())
-           window.draw(health);
-
            window.draw(player);
            window.draw(player.weapon_eq);
+           hud(window,player);
            window.display();
 
            //std::cout<<player.getOrigin().x<<std::endl<<player.getOrigin().y<<std::endl;

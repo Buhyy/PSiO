@@ -5,7 +5,7 @@ Enemy::Enemy()
 
     if (!Texture.loadFromFile("enemy.png"))
     {
-        std::cout << "Could not load texture" << std::endl;
+        std::cout << "something wrong" << std::endl;
     }
     this->setTexture(Texture);
     this->setScale(0.2,0.2);

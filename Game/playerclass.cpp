@@ -3,7 +3,6 @@
 PlayerClass::PlayerClass()
 {
 
-    health_=100;
     if (!Texture.loadFromFile("Patatek.png"))
     {
         std::cout << "Could not load texture" << std::endl;
@@ -17,6 +16,12 @@ PlayerClass::PlayerClass()
     bound_y_top_=32;
     bound_y_bottm_=32*21;
     floor_check_=true;
+
+    health_max_=100;
+    health_=health_max_;
+    armour_=10;
+    speed_=200;
+    dmg_=20;
 
 }
 void PlayerClass::setDir_x(float D_x)
@@ -108,8 +113,8 @@ void PlayerClass::animate(const sf::Time &elapsed){
         weapon_place_r();
          if(rectangle_bounds.left+rectangle_bounds.width>bound_x_right_)
         {
-        this->move((float)-250*dir_x_*time,0);
-            weapon_eq.move((float)-250*dir_x_*time,0);
+        this->move((float)-speed_*dir_x_*time,0);
+            weapon_eq.move((float)-speed_*dir_x_*time,0);
 
         dir_x_=0;
         }
@@ -119,8 +124,8 @@ void PlayerClass::animate(const sf::Time &elapsed){
                     &&(rectangle_bounds.top<obstacle.top||rectangle_bounds.top<obstacle.top+obstacle.height)
                     &&(rectangle_bounds.top+rectangle_bounds.height>obstacle.top+obstacle.height||rectangle_bounds.top+rectangle_bounds.height>obstacle.top))
             {
-                this->move((float)-250*dir_x_*time,0);
-                weapon_eq.move((float)-250*dir_x_*time,0);
+                this->move((float)-speed_*dir_x_*time,0);
+                weapon_eq.move((float)-speed_*dir_x_*time,0);
                 dir_x_=0;
             }
         }
@@ -131,8 +136,8 @@ void PlayerClass::animate(const sf::Time &elapsed){
         weapon_place_l();
         if(rectangle_bounds.left<bound_x_left_)
         {
-            this->move((float)-250*dir_x_*time,0);
-            weapon_eq.move((float)-250*dir_x_*time,0);
+            this->move((float)-speed_*dir_x_*time,0);
+            weapon_eq.move((float)-speed_*dir_x_*time,0);
             dir_x_=0;
         }
         for(auto &obstacle : ObstacleColisions_)
@@ -141,8 +146,8 @@ void PlayerClass::animate(const sf::Time &elapsed){
                     &&(rectangle_bounds.top<obstacle.top||rectangle_bounds.top<obstacle.top+obstacle.height)
                     &&(rectangle_bounds.top+rectangle_bounds.height>obstacle.top+obstacle.height||rectangle_bounds.top+rectangle_bounds.height>obstacle.top))
             {
-                this->move((float)-250*dir_x_*time,0);
-                weapon_eq.move((float)-250*dir_x_*time,0);
+                this->move((float)-speed_*dir_x_*time,0);
+                weapon_eq.move((float)-speed_*dir_x_*time,0);
                 dir_x_=0;
             }
         }
