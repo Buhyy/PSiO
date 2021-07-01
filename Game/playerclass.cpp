@@ -22,6 +22,7 @@ PlayerClass::PlayerClass()
     armour_=10;
     speed_=200;
     dmg_=20;
+    jumps_=2;
 
 }
 void PlayerClass::setDir_x(float D_x)
@@ -49,7 +50,14 @@ void PlayerClass::jump(const sf::Time &elapsed)
         weapon_eq.move(0,(float)-400*elapsed.asSeconds());
     }
     else
-    {
+    {   if(jumps_!=0)
+        {
+        jumps_--;
+        }
+        if(jumps_==0)
+        {
+            floor_check_=false;
+        }
         Time_=0;
         dir_y_=0;
     }
@@ -168,6 +176,9 @@ void PlayerClass::gravity(const sf::Time &elapsed)
             {
                this->setPosition(this->getGlobalBounds().left,(float)32*21-this->getGlobalBounds().height);
               weapon_eq.setPosition(weapon_eq.getGlobalBounds().left,this->getGlobalBounds().top-10);
+              floor_check_=true;
+              jumps_=2;
+              this->setDir_y(0);
             }
           else
           {
@@ -180,6 +191,9 @@ void PlayerClass::gravity(const sf::Time &elapsed)
                 {
                     this->setPosition(this->getGlobalBounds().left,obstacle.top-this->getGlobalBounds().height);
                    weapon_eq.setPosition(weapon_eq.getGlobalBounds().left,this->getGlobalBounds().top-10);
+                   floor_check_=true;
+                   jumps_=2;
+                   this->setDir_y(0);
                 }
             }
 }

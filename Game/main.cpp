@@ -15,29 +15,21 @@
 #include "Functions.h"
 int main()
 {
-    // create the window
     srand(time(NULL));
-  //  int Sx=1000, Sy=800;
     sf::RenderWindow window(sf::VideoMode(32*32+300,32*22), "Dungreed--", sf::Style::Titlebar | sf::Style::Close);//sf::Style::Fullscreen
     sf::Image icon;
     icon.loadFromFile("logo.png");
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-//sf::Clock clock;
-
 
     PlayerClass player;
-    //Enemy enemy;
     std::vector<std::unique_ptr<Character>> enemies;
     std::vector<std::unique_ptr<Item>> items;
     std::vector<std::unique_ptr<chest>> chests;
 
-
     weapon sword;
     player.weapon_eq=sword;
-    player.setPosition(100,100);
+    player.setPosition(100,window.getSize().y-32-player.getGlobalBounds().height);
     player.weapon_place_r();
-
-
 
     sf::Texture SkyTexture;
     if (!SkyTexture.loadFromFile("sky.png")) {
@@ -65,11 +57,10 @@ int main()
     DoorSprite.setTexture(DoorTexture);
 
 
-
-
     std::vector<sf::Vector2f> ObstaclesPositions;
     std::vector<sf::FloatRect> ObstacleColisions;
-     std::vector<Room> Rooms;
+    std::vector<Room> Rooms;
+
 
     for(unsigned long long i=0;i<11;i++)
     {
@@ -121,17 +112,27 @@ player.setObstacleColisions(ObstacleColisions);
      chests[i]->setPosition(15*32,20*32);
      chests[i]->room_number_set(i);
     }
+       sf::Font arial;
+       arial.loadFromFile("arial.TTF");
+
    for(unsigned long long i = 0;i<=Rooms.size()-1;i++)
    {
      items.emplace_back(std::make_unique<Item>());
-     items[i]->setPosition(15*32,18*32);
+     items[i]->setPosition(chests[i]->getGlobalBounds().left+chests[i]->getGlobalBounds().width/2-items[i]->getGlobalBounds().width/2,18*32);
      items[i]->room_number_set(i);
      chests[i]->itemik=*items[i];
      chests[i]->itemik.setPosition(chests[i]->getGlobalBounds().left+chests[i]->getGlobalBounds().width/2,chests[i]->getGlobalBounds().top);
+     chests[i]->itemik.Description.setPosition(chests[i]->itemik.getGlobalBounds().left+chests[i]->itemik.getGlobalBounds().width/2-chests[i]->itemik.Description.getGlobalBounds().width/2,chests[i]->itemik.getGlobalBounds().top-40);
+     chests[i]->itemik.Description.setCharacterSize(10);
+     chests[i]->itemik.Description.setColor(sf::Color::Black);
+     chests[i]->itemik.Description.setFont(arial);
     }
     sf::Clock clock;
-    float timer_atack=0;
+    float timer_atack=0,imune_time=0;
+
+
     while (window.isOpen()) {
+
         sf::Time elapsed = clock.restart();
 
         sf::Event event;
@@ -258,7 +259,8 @@ player.setObstacleColisions(ObstacleColisions);
                     }
                 }
         }
-
+        if(player.health()>0)
+        {
         for(unsigned long long i =0;i<enemies.size();i++)
         {
             unsigned long long alive= 0;
@@ -270,6 +272,19 @@ player.setObstacleColisions(ObstacleColisions);
             {
                 Rooms[Curent_Room_Number].set_is_cleared();
             }
+            if(imune_time==0 && !enemies[i]->is_dead() &&enemies[i]->room_number()==Curent_Room_Number&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(enemies[i]->getGlobalBounds().left+(enemies[i]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(enemies[i]->getGlobalBounds().top+(enemies[i]->getGlobalBounds().height/2)),2))<(enemies[i]->getGlobalBounds().width+enemies[i]->getGlobalBounds().height)*8)
+            {
+                player.get_hurt(enemies[i]->dmg()-enemies[i]->dmg()*player.armour()/100);
+                imune_time+=elapsed.asSeconds();
+            }
+        }
+        if(imune_time!=0)
+        {
+            imune_time+=elapsed.asSeconds();
+            if(imune_time>0.5)
+            {
+                imune_time=0;
+            }
         }
         window.clear(sf::Color::White);
 
@@ -277,6 +292,7 @@ player.setObstacleColisions(ObstacleColisions);
            {
                    for(unsigned long long j =0; j<Rooms[Curent_Room_Number].layout()[i].size();j++)
                    {
+
                        if(i==0 || i==Rooms[Curent_Room_Number].layout().size()-1 || j==0 || j==Rooms[Curent_Room_Number].layout()[i].size()-1)
                        {
                            WallSprite.setPosition(float(i*32) ,float(j*32));
@@ -319,13 +335,13 @@ player.setObstacleColisions(ObstacleColisions);
            {
                if(chest->room_number()==Curent_Room_Number)
                {
-               //enemy->animate(elapsed);
                window.draw(*chest);
 
               }
            }
            for(unsigned long long i=0; i<Rooms.size(); i++)
            {
+
             if(!chests[i]->is_oppened() && Curent_Room_Number==i &&!items[i]->taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(items[i]->getGlobalBounds().left+(items[i]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(items[i]->getGlobalBounds().top+(items[i]->getGlobalBounds().height/2)),2))<70)
             {
                 items[i]->take();
@@ -336,19 +352,62 @@ player.setObstacleColisions(ObstacleColisions);
                 player.addspeed(items[i]->speed());
             }
             if(!chests[i]->is_oppened() && Curent_Room_Number==i &&!items[i]->taken())
+            {
                 window.draw(*items[i]);
+                window.draw(chests[i]->itemik.Description);
+            }
            }
 
-           // enemy.gravity(elapsed);
-           window.draw(player);
-           window.draw(player.weapon_eq);
-           player.weapon_eq.atack(timer_atack,elapsed.asSeconds());
-           std::cout<<timer_atack<<std::endl;
+
            if(Curent_Room_Number==0)
            {
                Tutorial(window);
            }
            hud(window,player);
+           window.draw(player);
+           window.draw(player.weapon_eq);
+           player.weapon_eq.atack(timer_atack,elapsed.asSeconds());
+           unsigned long long win_chceck=0;
+           if(win_chceck==0)
+           {
+           for(unsigned long long i=0; i<Rooms.size();i++)
+           {
+               if(Rooms[i].is_cleared())
+               {
+                   win_chceck++;
+               }
+           }
+           }
+           if(win_chceck==Rooms.size())
+           {
+               std::string wins="You Won !";
+               sf::Text wint;
+               wint.setString(wins);
+               wint.setPosition(32*8,32*10);
+               wint.setFont(arial);
+               wint.setCharacterSize(60);
+               window.draw(wint);
+           }
+           else
+           {
+               win_chceck=0;
+           }
+        }
+        if(player.health()<=0)
+        {
+            sf::RectangleShape end(sf::Vector2f(window.getSize().x, window.getSize().y));
+            end.setPosition(0,0);
+            end.setFillColor(sf::Color::Black);
+            window.draw(end);
+            std::string ends="Game Over !";
+            sf::Text endt;
+            endt.setString(ends);
+            endt.setPosition(32*12,32*10);
+            endt.setFont(arial);
+            endt.setCharacterSize(60);
+            window.draw(endt);
+
+        }
            window.display();
 
 

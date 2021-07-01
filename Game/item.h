@@ -16,6 +16,7 @@ public:
     bool taken();
     int room_number();
     void room_number_set(unsigned long long number);
+    sf::Text Description;
 private:
     int heal_;
     int hp_;

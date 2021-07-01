@@ -8,8 +8,8 @@ Room::Room(int type)
     {
     case 1:
     {
-        std::vector<int> layer = {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,3,3};
-        std::vector<int> layer2 = {3,0,0,0,0,0,0,0,3,0,0,0,0,0,0,3,0,0,0,0,0,3};
+        std::vector<int> layer = {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3};
+        std::vector<int> layer2 = {3,0,0,0,3,0,0,0,3,0,0,0,0,0,0,0,3,0,3,0,0,3};
         std::vector<int> layer3 = {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3};
         layout_.emplace_back(layer);
         for(unsigned long long i=0;i<10;i++)//

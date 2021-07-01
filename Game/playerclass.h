@@ -50,7 +50,7 @@ private:
     int dmg_;
     int speed_;
     int armour_;
-
+    int jumps_;
 
 };
 #endif // PLAYERCLASS_H

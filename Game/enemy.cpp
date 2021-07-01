@@ -16,6 +16,7 @@ Enemy::Enemy()
     bound_y_bottm_=32*21;
     floor_check_=true;
     health_=100;
+    dmg_=25;
     is_dead_=false;
 }
 void Enemy::setObstacleColisions( std::vector<sf::FloatRect> obstacle_colisions)

@@ -17,6 +17,7 @@ public:
     virtual void kill();
     virtual void deal_dmg(int dmg_dealt);
     virtual int health();
+    virtual int dmg();
 
 };
 

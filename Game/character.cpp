@@ -44,3 +44,7 @@ int Character::health()
 {
 
 }
+int Character::dmg()
+{
+
+}

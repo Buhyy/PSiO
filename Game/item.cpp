@@ -2,6 +2,10 @@
 
 Item::Item()
 {
+
+
+
+   std::string descript;
 taken_=false;
 int type = rand() % 5;
 switch(type)
@@ -17,6 +21,8 @@ case 0:
     armour_=0;
     speed_=0;
     heal_=0;
+    descript = "Health + "+std::to_string(hp_);
+    Description.setString(descript);
     break;
 }
 case 1:
@@ -30,6 +36,8 @@ case 1:
     armour_=0;
     speed_=0;
     heal_=0;
+    descript = "Damage + "+std::to_string(dmg_);
+    Description.setString(descript);
     break;
 }
 case 2:
@@ -43,6 +51,8 @@ case 2:
     armour_=10;
     speed_=0;
     heal_=0;
+    descript = "Armour + "+std::to_string(armour_);
+    Description.setString(descript);
     break;
 }
 case 3:
@@ -56,6 +66,8 @@ case 3:
     armour_=0;
     speed_=20;
     heal_=0;
+    descript = "Speed + "+std::to_string(speed_);
+    Description.setString(descript);
     break;
 }
 case 4:
@@ -69,6 +81,8 @@ case 4:
     armour_=0;
     speed_=0;
     heal_=70;
+    descript = "Heal + "+std::to_string(heal_);
+    Description.setString(descript);
     break;
 }
 }
