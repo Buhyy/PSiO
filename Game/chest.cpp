@@ -13,7 +13,7 @@ chest::chest()
    //this->setPosition(200,200);
 
 }
-int chest::room_number()
+unsigned long long chest::room_number()
 {
     return room_number_;
 }

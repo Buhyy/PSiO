@@ -9,7 +9,7 @@ class chest : public sf::Sprite
 {
 public:
     chest();
-    int room_number();
+    unsigned long long room_number();
     void room_number_set(unsigned long long number);
     void open();
     bool is_oppened();

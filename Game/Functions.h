@@ -5,4 +5,5 @@
 #include "playerclass.h"
 
 void hud(sf::RenderWindow &window,PlayerClass &player);
+void Tutorial(sf::RenderWindow &window);
 #endif // FUNCTIONS_H

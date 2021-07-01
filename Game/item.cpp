@@ -17,7 +17,6 @@ case 0:
     armour_=0;
     speed_=0;
     heal_=0;
-    this->setScale(0.5,0.5);
     break;
 }
 case 1:

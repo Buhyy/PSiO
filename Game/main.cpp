@@ -20,7 +20,7 @@ int main()
   //  int Sx=1000, Sy=800;
     sf::RenderWindow window(sf::VideoMode(32*32+300,32*22), "Dungreed--", sf::Style::Titlebar | sf::Style::Close);//sf::Style::Fullscreen
     sf::Image icon;
-    icon.loadFromFile("patatek.png");
+    icon.loadFromFile("logo.png");
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 //sf::Clock clock;
 
@@ -71,11 +71,20 @@ int main()
     std::vector<sf::FloatRect> ObstacleColisions;
      std::vector<Room> Rooms;
 
-    for(unsigned long long i=0;i<10;i++)
+    for(unsigned long long i=0;i<11;i++)
     {
+        if(i==0)
+        {
+            Room room1(3);
+            Rooms.emplace_back(room1);
+            Rooms[i].set_is_cleared();
+        }
+        else
+        {
         int variant=rand() % 3+1;
         Room room1(variant);
         Rooms.emplace_back(room1);
+        }
     }
 
     unsigned long long Curent_Room_Number=0;
@@ -94,25 +103,25 @@ int main()
      }
 player.setObstacleColisions(ObstacleColisions);
 
-   for(unsigned long long i = 0;i<=Rooms.size();i++)
+   for(unsigned long long i = 0;i<=Rooms.size()-1;i++)
    {
      enemies.emplace_back(std::make_unique<Enemy>());
      enemies[i*3]->setPosition(200,200);
-     enemies[i*3]->room_number_set(i);
+     enemies[i*3]->room_number_set(i+1);
      enemies.emplace_back(std::make_unique<Enemy>());
      enemies[i*3+1]->setPosition(400,200);
-     enemies[i*3+1]->room_number_set(i);
+     enemies[i*3+1]->room_number_set(i+1);
      enemies.emplace_back(std::make_unique<Enemy>());
      enemies[i*3+2]->setPosition(300,200);
-     enemies[i*3+2]->room_number_set(i);
+     enemies[i*3+2]->room_number_set(i+1);
    }
-   for(unsigned long long i = 0;i<=Rooms.size();i++)
+   for(unsigned long long i = 0;i<=Rooms.size()-1;i++)
    {
      chests.emplace_back(std::make_unique<chest>());
      chests[i]->setPosition(15*32,20*32);
      chests[i]->room_number_set(i);
     }
-   for(unsigned long long i = 0;i<=Rooms.size();i++)
+   for(unsigned long long i = 0;i<=Rooms.size()-1;i++)
    {
      items.emplace_back(std::make_unique<Item>());
      items[i]->setPosition(15*32,18*32);
@@ -121,9 +130,10 @@ player.setObstacleColisions(ObstacleColisions);
      chests[i]->itemik.setPosition(chests[i]->getGlobalBounds().left+chests[i]->getGlobalBounds().width/2,chests[i]->getGlobalBounds().top);
     }
     sf::Clock clock;
-
+    float timer_atack=0;
     while (window.isOpen()) {
         sf::Time elapsed = clock.restart();
+
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
@@ -145,9 +155,9 @@ player.setObstacleColisions(ObstacleColisions);
                                {
                                    if(Curent_Room_Number<Rooms.size()-1)
                                    {
-                                 Curent_Room_Number++;
-                                 player.weapon_place_r();
+                                 Curent_Room_Number++; 
                                  player.setPosition(70,610);
+                                 player.weapon_place_r();
                                  ObstacleColisions.clear();
                                  ObstaclesPositions.clear();
                                  for(unsigned long long i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
@@ -171,8 +181,8 @@ player.setObstacleColisions(ObstacleColisions);
                                    if(Curent_Room_Number>0)
                                    {
                                  Curent_Room_Number--;
-                                 player.weapon_place_l();
                                  player.setPosition(980,610);
+                                 player.weapon_place_l();
                                  ObstacleColisions.clear();
                                  ObstaclesPositions.clear();
                                  for(unsigned long long i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
@@ -198,6 +208,9 @@ player.setObstacleColisions(ObstacleColisions);
                             }
                        }
                     if (event.key.code == sf::Keyboard::A) {
+                        if(!player.weapon_eq.is_atacking())
+                        {
+                            player.weapon_eq.set_atack();
                         for(unsigned long long i =0 ; i<enemies.size();i++)
                         {
                             if(player.getDix_x()== -1)
@@ -229,6 +242,7 @@ player.setObstacleColisions(ObstacleColisions);
                                 }
                             }
                         }
+                    }
                     }
                 }
             if (event.type == sf::Event::KeyReleased) {
@@ -328,6 +342,12 @@ player.setObstacleColisions(ObstacleColisions);
            // enemy.gravity(elapsed);
            window.draw(player);
            window.draw(player.weapon_eq);
+           player.weapon_eq.atack(timer_atack,elapsed.asSeconds());
+           std::cout<<timer_atack<<std::endl;
+           if(Curent_Room_Number==0)
+           {
+               Tutorial(window);
+           }
            hud(window,player);
            window.display();
 
