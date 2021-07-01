@@ -15,7 +15,7 @@ public:
     void take();
     bool taken();
     int room_number();
-    void room_number_set(int number);
+    void room_number_set(unsigned long long number);
 private:
     int heal_;
     int hp_;
@@ -24,7 +24,7 @@ private:
     int armour_;
     sf::Texture Texture;
     bool taken_;
-    int room_number_;
+    unsigned long long room_number_;
 };
 
 #endif // ITEM_H

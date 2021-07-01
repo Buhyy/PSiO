@@ -16,7 +16,7 @@ void Character::animate(const sf::Time &elapsed)
 {
 
 }
-void Character::room_number_set(int number)
+void Character::room_number_set(unsigned long long number)
 {
 
 }
@@ -24,7 +24,7 @@ void Character::setTarget(sf::Vector2f Targ)
 {
 
 }
-int Character::room_number()
+unsigned long long Character::room_number()
 {
 
 }
@@ -33,6 +33,14 @@ bool Character::is_dead()
 
 }
 void Character::kill()
+{
+
+}
+void Character::deal_dmg(int dmg_dealt)
+{
+
+}
+int Character::health()
 {
 
 }

@@ -15,6 +15,8 @@ Enemy::Enemy()
     bound_y_top_=32;
     bound_y_bottm_=32*21;
     floor_check_=true;
+    health_=100;
+    is_dead_=false;
 }
 void Enemy::setObstacleColisions( std::vector<sf::FloatRect> obstacle_colisions)
 {
@@ -56,11 +58,11 @@ void Enemy::gravity(const sf::Time &elapsed)
             }
 }
 void Enemy::setTarget(sf::Vector2f Targ){target=Targ;}
-int Enemy::room_number()
+unsigned long long Enemy::room_number()
 {
     return room_number_;
 }
-void Enemy::room_number_set(int number)
+void Enemy::room_number_set(unsigned long long number)
 {
     room_number_=number;
 }
@@ -70,4 +72,16 @@ bool Enemy::is_dead()
 }
 void Enemy::kill(){
     is_dead_=true;
+}
+int Enemy::dmg()
+{
+    return dmg_;
+}
+int Enemy::health()
+{
+    return health_;
+}
+void Enemy::deal_dmg(int dmg_dealt)
+{
+    health_-=dmg_dealt;
 }

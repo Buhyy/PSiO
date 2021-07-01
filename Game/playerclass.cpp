@@ -32,6 +32,10 @@ void PlayerClass::setDir_y(float D_y)
 {
     dir_y_=D_y;
 }
+float PlayerClass::getDix_x()
+{
+    return dir_x_;
+}
 void PlayerClass::setObstacleColisions( std::vector<sf::FloatRect> obstacle_colisions)
 {
     ObstacleColisions_=obstacle_colisions;
@@ -174,8 +178,6 @@ void PlayerClass::gravity(const sf::Time &elapsed)
             {
                 if(rectangle_bounds.top+rectangle_bounds.height+100*time>obstacle.top && rectangle_bounds.top+rectangle_bounds.height+100*time<obstacle.top+obstacle.height&&(rectangle_bounds.left<obstacle.left||rectangle_bounds.left<obstacle.left+obstacle.width)&&(rectangle_bounds.left+rectangle_bounds.width>obstacle.left+obstacle.width||rectangle_bounds.left+rectangle_bounds.width>obstacle.left))
                 {
-//                    this->move(0,(float)-200*time);
-//                    weapon_eq.move(0,(float)-200*time);
                     this->setPosition(this->getGlobalBounds().left,obstacle.top-this->getGlobalBounds().height);
                    weapon_eq.setPosition(weapon_eq.getGlobalBounds().left,this->getGlobalBounds().top-10);
                 }
@@ -236,4 +238,8 @@ void PlayerClass::weapon_place_r()
 void PlayerClass::weapon_place_l()
 {
     this->weapon_eq.setPosition(this->getGlobalBounds().left-10,this->getGlobalBounds().top-10);
+}
+void PlayerClass::get_hurt(int ammount)
+{
+    health_-=ammount;
 }

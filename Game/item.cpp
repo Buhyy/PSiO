@@ -105,7 +105,7 @@ int Item::room_number()
 {
     return room_number_;
 }
-void Item::room_number_set(int number)
+void Item::room_number_set(unsigned long long number)
 {
     room_number_=number;
 }

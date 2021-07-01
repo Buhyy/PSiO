@@ -10,11 +10,13 @@ public:
     virtual ~Character();
     virtual void gravity();
     virtual void animate(const sf::Time &elapsed);
-    virtual void room_number_set(int number);
+    virtual void room_number_set(unsigned long long number);
     virtual void setTarget(sf::Vector2f Targ);
-    virtual int room_number();
-    bool is_dead();
-    void kill();
+    virtual unsigned long long room_number();
+    virtual bool is_dead();
+    virtual void kill();
+    virtual void deal_dmg(int dmg_dealt);
+    virtual int health();
 
 };
 

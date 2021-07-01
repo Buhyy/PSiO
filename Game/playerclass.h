@@ -12,6 +12,7 @@ public:
     PlayerClass();
     void setDir_x(float D_x);
     void setDir_y(float D_y);
+    float getDix_x();
     void setObstacleColisions( std::vector<sf::FloatRect> obstacle_colisions);
     void jump(const sf::Time &elapsed);
     void animate(const sf::Time &elapsed);
@@ -28,6 +29,7 @@ public:
     void heal(int bonus);
     void weapon_place_r();
     void weapon_place_l();
+    void get_hurt(int ammount);
     weapon weapon_eq;
 private:
     float Time_;

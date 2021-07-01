@@ -12,16 +12,16 @@ Room::Room(int type)
         std::vector<int> layer2 = {3,0,0,0,0,0,0,0,3,0,0,0,0,0,0,3,0,0,0,0,0,3};
         std::vector<int> layer3 = {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3};
         layout_.emplace_back(layer);
-        for(int i=0;i<10;i++)//
+        for(unsigned long long i=0;i<10;i++)//
         {
             layout_.emplace_back(layer3);
         }
-        for(int i=0;i<1;i++)//
+        for(unsigned long long i=0;i<1;i++)//
         {
 
            layout_.emplace_back(layer2);
         }
-        for(int i=0;i<19;i++)//
+        for(unsigned long long i=0;i<19;i++)//
         {
 
            layout_.emplace_back(layer3);
@@ -35,7 +35,7 @@ Room::Room(int type)
          std::vector<int>layer = {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3};
          std::vector<int>layer3 = {3,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3};
         layout_.emplace_back(layer);
-        for(int i=0;i<30;i++)//
+        for(unsigned long long i=0;i<30;i++)//
         {
             layout_.emplace_back(layer3);
         }
@@ -48,15 +48,15 @@ Room::Room(int type)
          std::vector<int>layer2 = {3,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,3};
          std::vector<int>layer3 = {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3};
         layout_.emplace_back(layer);
-        for(int i=0;i<10;i++)//
+        for(unsigned long long i=0;i<10;i++)//
         {
             layout_.emplace_back(layer3);
         }
-        for(int i=0;i<10;i++)//
+        for(unsigned long long i=0;i<10;i++)//
         {
             layout_.emplace_back(layer2);
         }
-        for(int i=0;i<10;i++)//
+        for(unsigned long long i=0;i<10;i++)//
         {
             layout_.emplace_back(layer3);
         }

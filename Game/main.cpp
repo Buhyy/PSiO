@@ -18,10 +18,11 @@ int main()
     // create the window
     srand(time(NULL));
   //  int Sx=1000, Sy=800;
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "My window");//sf::Style::Fullscreen
-
+    sf::RenderWindow window(sf::VideoMode(32*32+300,32*22), "Dungreed--", sf::Style::Titlebar | sf::Style::Close);//sf::Style::Fullscreen
+    sf::Image icon;
+    icon.loadFromFile("patatek.png");
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 //sf::Clock clock;
-
 
 
     PlayerClass player;
@@ -48,17 +49,8 @@ int main()
     if (!WallTexture.loadFromFile("wall.png")) {
         std::cout << "something wrong" << std::endl;
     }
-
     sf::Sprite WallSprite;
     WallSprite.setTexture(WallTexture);
-    sf::Texture DirtTexture;
-    if (!DirtTexture.loadFromFile("dirt.png")) {
-        std::cout << "something wrong" << std::endl;
-    }
-
-    sf::Sprite DirtSprite;
-    DirtSprite.setTexture(DirtTexture);
-
     sf::Texture PlayerTexture;
     if (!PlayerTexture.loadFromFile("Patatek.png")) {
         std::cout << "something wrong" << std::endl;
@@ -79,18 +71,17 @@ int main()
     std::vector<sf::FloatRect> ObstacleColisions;
      std::vector<Room> Rooms;
 
-    for(int i=0;i<10;i++)
+    for(unsigned long long i=0;i<10;i++)
     {
         int variant=rand() % 3+1;
         Room room1(variant);
         Rooms.emplace_back(room1);
     }
 
-    int Curent_Room_Number=0;
-    for(int i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
+    unsigned long long Curent_Room_Number=0;
+    for(unsigned long long i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
     {
-
-            for(int j =1; j<Rooms[Curent_Room_Number].layout()[i].size()-1;j++)
+            for(unsigned long long j =1; j<Rooms[Curent_Room_Number].layout()[i].size()-1;j++)
             {
                 sf::Vector2f obstacle_position = {float(i*32) ,float(j*32)};
                 if(Rooms[Curent_Room_Number].layout()[i][j]==3)
@@ -99,13 +90,11 @@ int main()
                     sf::FloatRect PositionRect(obstacle_position.x,obstacle_position.y,32,32);
                     ObstacleColisions.emplace_back(PositionRect);
                 }
-
-
             }
      }
 player.setObstacleColisions(ObstacleColisions);
 
-   for(int i = 0;i<=Rooms.size();i++)
+   for(unsigned long long i = 0;i<=Rooms.size();i++)
    {
      enemies.emplace_back(std::make_unique<Enemy>());
      enemies[i*3]->setPosition(200,200);
@@ -117,26 +106,25 @@ player.setObstacleColisions(ObstacleColisions);
      enemies[i*3+2]->setPosition(300,200);
      enemies[i*3+2]->room_number_set(i);
    }
-   for(int i = 0;i<=Rooms.size();i++)
+   for(unsigned long long i = 0;i<=Rooms.size();i++)
    {
      chests.emplace_back(std::make_unique<chest>());
-     chests[i]->setPosition(200,200);
+     chests[i]->setPosition(15*32,20*32);
      chests[i]->room_number_set(i);
-    }//itemik.setPosition(this->getGlobalBounds().left+this->getGlobalBounds().width/2,this->getGlobalBounds().top);
-   for(int i = 0;i<=Rooms.size();i++)
+    }
+   for(unsigned long long i = 0;i<=Rooms.size();i++)
    {
      items.emplace_back(std::make_unique<Item>());
-     items[i]->setPosition(200,200);
+     items[i]->setPosition(15*32,18*32);
      items[i]->room_number_set(i);
      chests[i]->itemik=*items[i];
      chests[i]->itemik.setPosition(chests[i]->getGlobalBounds().left+chests[i]->getGlobalBounds().width/2,chests[i]->getGlobalBounds().top);
     }
-          sf::Clock clock;
+    sf::Clock clock;
 
     while (window.isOpen()) {
         sf::Time elapsed = clock.restart();
         sf::Event event;
-
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
@@ -144,9 +132,6 @@ player.setObstacleColisions(ObstacleColisions);
                     if (event.key.code == sf::Keyboard::Up) {
                                player.setDir_y(-1);
                             }
-                    if (event.key.code == sf::Keyboard::Down) {
-                             //  player.setDir_y(1);
-                           }
                     if (event.key.code == sf::Keyboard::Left) {
                                player.setDir_x(-1);
                     }
@@ -154,6 +139,8 @@ player.setObstacleColisions(ObstacleColisions);
                                player.setDir_x(1);
                            }
                     if (event.key.code == sf::Keyboard::E) {
+                               if(Rooms[Curent_Room_Number].is_cleared())
+                               {
                                if(player.getGlobalBounds().left+player.getGlobalBounds().width>900)
                                {
                                    if(Curent_Room_Number<Rooms.size()-1)
@@ -163,10 +150,9 @@ player.setObstacleColisions(ObstacleColisions);
                                  player.setPosition(70,610);
                                  ObstacleColisions.clear();
                                  ObstaclesPositions.clear();
-                                 for(int i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
+                                 for(unsigned long long i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
                                  {
-
-                                         for(int j =1; j<Rooms[Curent_Room_Number].layout()[i].size()-1;j++)
+                                         for(unsigned long long j =1; j<Rooms[Curent_Room_Number].layout()[i].size()-1;j++)
                                          {
                                              sf::Vector2f obstacle_position = {float(i*32) ,float(j*32)};
                                              if(Rooms[Curent_Room_Number].layout()[i][j]==3)
@@ -175,8 +161,6 @@ player.setObstacleColisions(ObstacleColisions);
                                                  sf::FloatRect PositionRect(obstacle_position.x,obstacle_position.y,32,32);
                                                  ObstacleColisions.emplace_back(PositionRect);
                                              }
-
-
                                          }
                                   }
                              player.setObstacleColisions(ObstacleColisions);
@@ -191,10 +175,9 @@ player.setObstacleColisions(ObstacleColisions);
                                  player.setPosition(980,610);
                                  ObstacleColisions.clear();
                                  ObstaclesPositions.clear();
-                                 for(int i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
+                                 for(unsigned long long i=1;i<Rooms[Curent_Room_Number].layout().size()-1;i++)
                                  {
-
-                                         for(int j =1; j<Rooms[Curent_Room_Number].layout()[i].size()-1;j++)
+                                         for(unsigned long long j =1; j<Rooms[Curent_Room_Number].layout()[i].size()-1;j++)
                                          {
                                              sf::Vector2f obstacle_position = {float(i*32) ,float(j*32)};
                                              if(Rooms[Curent_Room_Number].layout()[i][j]==3)
@@ -203,32 +186,52 @@ player.setObstacleColisions(ObstacleColisions);
                                                  sf::FloatRect PositionRect(obstacle_position.x,obstacle_position.y,32,32);
                                                  ObstacleColisions.emplace_back(PositionRect);
                                              }
-
-
                                          }
                                   }
                              player.setObstacleColisions(ObstacleColisions);
                                    }
                                 }
-
-
-                                if(chests[Curent_Room_Number]->is_oppened()&& !Rooms[Curent_Room_Number].is_cleared() && (pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(chests[Curent_Room_Number]->getGlobalBounds().left+(chests[Curent_Room_Number]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(chests[Curent_Room_Number]->getGlobalBounds().top+(chests[Curent_Room_Number]->getGlobalBounds().height/2)),2))<100)
+                                if(chests[Curent_Room_Number]->is_oppened()&& (pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(chests[Curent_Room_Number]->getGlobalBounds().left+(chests[Curent_Room_Number]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(chests[Curent_Room_Number]->getGlobalBounds().top+(chests[Curent_Room_Number]->getGlobalBounds().height/2)),2))<100)
                                 {
                                     chests[Curent_Room_Number]->open();
-                                    std::cout<<"open";
                                 }
-
-
-
-
-
                             }
+                       }
+                    if (event.key.code == sf::Keyboard::A) {
+                        for(unsigned long long i =0 ; i<enemies.size();i++)
+                        {
+                            if(player.getDix_x()== -1)
+                            {
+                            if(enemies[i]->room_number()==Curent_Room_Number)
+                            {
+                            if(enemies[i]->getGlobalBounds().left+enemies[i]->getGlobalBounds().width/2>player.getGlobalBounds().left-75 && (enemies[i]->getGlobalBounds().top+enemies[i]->getGlobalBounds().height/2>player.getGlobalBounds().top-50 &&enemies[i]->getGlobalBounds().top+enemies[i]->getGlobalBounds().height/2<player.getGlobalBounds().top+player.getGlobalBounds().height+50))
+                            {
+                                enemies[i]->deal_dmg(player.dmg());
+                                if(enemies[i]->health()<=0)
+                                       {
+                                    enemies[i]->kill();
+                                }
+                            }
+                            }
+                            }
+                            else
+                            {
+                                if(enemies[i]->room_number()==Curent_Room_Number)
+                                {
+                                if(enemies[i]->getGlobalBounds().left+enemies[i]->getGlobalBounds().width/2<player.getGlobalBounds().left+player.getGlobalBounds().width+75 && (enemies[i]->getGlobalBounds().top+enemies[i]->getGlobalBounds().height/2>player.getGlobalBounds().top-50 &&enemies[i]->getGlobalBounds().top+enemies[i]->getGlobalBounds().height/2<player.getGlobalBounds().top+player.getGlobalBounds().height+50))
+                                {
+                                    enemies[i]->deal_dmg(player.dmg());
+                                    if(enemies[i]->health()<=0)
+                                           {
+                                        enemies[i]->kill();
+                                    }
+                                }
+                                }
+                            }
+                        }
+                    }
                 }
             if (event.type == sf::Event::KeyReleased) {
-                    if (event.key.code == sf::Keyboard::Up) {
-
-                               //player.setDir_y(0);
-                       }
 
                     if (event.key.code == sf::Keyboard::Down) {
                               player.setDir_y(0);
@@ -236,20 +239,29 @@ player.setObstacleColisions(ObstacleColisions);
                     if (event.key.code == sf::Keyboard::Left) {
                                 player.setDir_x(0);
                            }
-
                     if (event.key.code == sf::Keyboard::Right) {
                                player.setDir_x(0);
-
                     }
                 }
         }
 
-
+        for(unsigned long long i =0;i<enemies.size();i++)
+        {
+            unsigned long long alive= 0;
+            if(Curent_Room_Number == enemies[i]->room_number() && enemies[i]->is_dead())
+            {
+                alive++;
+            }
+            if(alive!=0)
+            {
+                Rooms[Curent_Room_Number].set_is_cleared();
+            }
+        }
         window.clear(sf::Color::White);
 
-           for(int i=0;i<Rooms[Curent_Room_Number].layout().size();i++)
+           for(unsigned long long i=0;i<Rooms[Curent_Room_Number].layout().size();i++)
            {
-                   for(int j =0; j<Rooms[Curent_Room_Number].layout()[i].size();j++)
+                   for(unsigned long long j =0; j<Rooms[Curent_Room_Number].layout()[i].size();j++)
                    {
                        if(i==0 || i==Rooms[Curent_Room_Number].layout().size()-1 || j==0 || j==Rooms[Curent_Room_Number].layout()[i].size()-1)
                        {
@@ -271,18 +283,7 @@ player.setObstacleColisions(ObstacleColisions);
                WallSprite.setScale(0.5,0.5);
                window.draw(WallSprite);
            }
-//           for(int i=0; i<Rooms.size(); i++)
-//           {
-//            if(!chests[i]->is_oppened() && Curent_Room_Number==i &&!items[i]->taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(items[i]->getGlobalBounds().left+(items[i]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(items[i]->getGlobalBounds().top+(items[i]->getGlobalBounds().height/2)),2))<70)
-//            {
-//                items[i]->take();
-//                player.addHp(items[i]->hp());
-//                player.adddmg(items[i]->dmg());
-//                player.addarmour(items[i]->armour());
-//                player.heal(items[i]->heal());
-//                player.addspeed(items[i]->speed());
-//            }
-//           }
+
            DoorSprite.setPosition(992,608);
            if(Curent_Room_Number!=Rooms.size()-1)
            window.draw(DoorSprite);
@@ -294,7 +295,7 @@ player.setObstacleColisions(ObstacleColisions);
            for(auto &enemy : enemies)
            {
                enemy->setTarget(sf::Vector2f(player.getGlobalBounds().left+(player.getGlobalBounds().width/2),player.getGlobalBounds().top+(player.getGlobalBounds().height/2)));
-               if(enemy->room_number()==Curent_Room_Number && enemy->is_dead()==false)
+               if(enemy->room_number()==Curent_Room_Number && !enemy->is_dead())
                {
                enemy->animate(elapsed);
                window.draw(*enemy);
@@ -306,13 +307,10 @@ player.setObstacleColisions(ObstacleColisions);
                {
                //enemy->animate(elapsed);
                window.draw(*chest);
-//               if(!chest->is_oppened() && !chest->itemik.taken())
-//               {
-//                   window.draw(chest->itemik);
-//               }
+
               }
            }
-           for(int i=0; i<Rooms.size(); i++)
+           for(unsigned long long i=0; i<Rooms.size(); i++)
            {
             if(!chests[i]->is_oppened() && Curent_Room_Number==i &&!items[i]->taken()&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(items[i]->getGlobalBounds().left+(items[i]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(items[i]->getGlobalBounds().top+(items[i]->getGlobalBounds().height/2)),2))<70)
             {
@@ -333,7 +331,7 @@ player.setObstacleColisions(ObstacleColisions);
            hud(window,player);
            window.display();
 
-           //std::cout<<player.getOrigin().x<<std::endl<<player.getOrigin().y<<std::endl;
+
 }
     return 0;
 }

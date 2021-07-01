@@ -17,7 +17,7 @@ int chest::room_number()
 {
     return room_number_;
 }
-void chest::room_number_set(int number)
+void chest::room_number_set(unsigned long long number)
 {
     room_number_=number;
 }
