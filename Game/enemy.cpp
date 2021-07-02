@@ -1,8 +1,12 @@
 #include "enemy.h"
 
-Enemy::Enemy()
+Enemy::Enemy(int type)
 {
-
+    variant=type;
+switch(variant)
+{
+case 1:
+{
     if (!Texture.loadFromFile("enemy.png"))
     {
         std::cout << "something wrong" << std::endl;
@@ -17,7 +21,56 @@ Enemy::Enemy()
     floor_check_=true;
     health_=100;
     dmg_=25;
+    fly_=true;
     is_dead_=false;
+    break;
+}
+case 2:
+{
+    if (!Texture.loadFromFile("wraith.png"))
+    {
+        std::cout << "something wrong" << std::endl;
+    }
+    if (!Texture1.loadFromFile("wraith2.png"))
+    {
+        std::cout << "something wrong" << std::endl;
+    }
+    this->setTexture(Texture);
+    this->setScale(0.2,0.2);
+    Time_=0;
+    bound_x_left_=32;
+    bound_x_right_=32*31;
+    bound_y_top_=32;
+    bound_y_bottm_=32*21;
+    floor_check_=true;
+    health_=175;
+    dmg_=5;
+    fly_=false;
+    is_dead_=false;
+    break;
+}
+case 3:
+{
+    if (!Texture.loadFromFile("enemy.png"))
+    {
+        std::cout << "something wrong" << std::endl;
+    }
+    this->setTexture(Texture);
+    this->setScale(0.6,0.6);
+    Time_=0;
+    bound_x_left_=32;
+    bound_x_right_=32*31;
+    bound_y_top_=32;
+    bound_y_bottm_=32*21;
+    floor_check_=true;
+    health_=500;
+    dmg_=50;
+    fly_=true;
+    is_dead_=false;
+    break;
+    break;
+}
+}
 }
 void Enemy::setObstacleColisions( std::vector<sf::FloatRect> obstacle_colisions)
 {
@@ -38,25 +91,63 @@ void Enemy::jump(const sf::Time &elapsed)
 }
 void Enemy::animate(const sf::Time &elapsed){
 
-        this->move(((target.x)-(this->getGlobalBounds().left+this->getGlobalBounds().width/2))*0.01,((target.y)-(this->getGlobalBounds().top+this->getGlobalBounds().height/2))*0.01);
+    switch (variant) {
 
+    case 1:
+    {
+        this->move(((target.x)-(this->getGlobalBounds().left+this->getGlobalBounds().width/2))*0.01,((target.y)-(this->getGlobalBounds().top+this->getGlobalBounds().height/2))*0.01);
+        break ;
+    }
+    case  2 :
+    {
+        if(target.x>this->getGlobalBounds().left+this->getGlobalBounds().width)
+        {
+            this->move(75*elapsed.asSeconds(),0);
+            this->setTexture(Texture);
+
+        }
+        if(target.x<this->getGlobalBounds().left+this->getGlobalBounds().width)
+        {
+            this->move(-75*elapsed.asSeconds(),0);
+            this->setTexture(Texture1);
+        }
+        break;
+    }
+    case 3:
+    {
+        this->move(((target.x)-(this->getGlobalBounds().left+this->getGlobalBounds().width/2))*0.03,((target.y)-(this->getGlobalBounds().top+this->getGlobalBounds().height/2))*0.03);
+        break ;
+    }
+
+}
 }
 void Enemy::gravity(const sf::Time &elapsed)
 {
+
+    if(!fly_){
     float time = elapsed.asSeconds();
     sf::FloatRect rectangle_bounds = this->getGlobalBounds();
-        this->move(0,(float)100*time);
-          if(rectangle_bounds.top+rectangle_bounds.height>(float)32*21)
+
+          if(rectangle_bounds.top+rectangle_bounds.height+100*time>(float)32*21)
             {
-            this->move(0,(float)-200*time);
+               this->setPosition(this->getGlobalBounds().left,(float)32*21-this->getGlobalBounds().height);
+              floor_check_=true;
+
             }
+          else
+          {
+              this->move(0,(float)100*time);
+          }
             for(auto &obstacle : ObstacleColisions_)
             {
-                if(rectangle_bounds.top+rectangle_bounds.height>obstacle.top && rectangle_bounds.top+rectangle_bounds.height<obstacle.top+obstacle.height&&(rectangle_bounds.left<obstacle.left||rectangle_bounds.left<obstacle.left+obstacle.width)&&(rectangle_bounds.left+rectangle_bounds.width>obstacle.left+obstacle.width||rectangle_bounds.left+rectangle_bounds.width>obstacle.left))
+                if(rectangle_bounds.top+rectangle_bounds.height+100*time>obstacle.top && rectangle_bounds.top+rectangle_bounds.height+100*time<obstacle.top+obstacle.height&&(rectangle_bounds.left<obstacle.left||rectangle_bounds.left<obstacle.left+obstacle.width)&&(rectangle_bounds.left+rectangle_bounds.width>obstacle.left+obstacle.width||rectangle_bounds.left+rectangle_bounds.width>obstacle.left))
                 {
-                    this->move(0,(float)-200*time);
+                    this->setPosition(this->getGlobalBounds().left,obstacle.top-this->getGlobalBounds().height);
+
+
                 }
             }
+    }
 }
 void Enemy::setTarget(sf::Vector2f Targ){target=Targ;}
 unsigned long long Enemy::room_number()
@@ -85,4 +176,8 @@ int Enemy::health()
 void Enemy::deal_dmg(int dmg_dealt)
 {
     health_-=dmg_dealt;
+}
+bool Enemy::can_fly()
+{
+    return fly_;
 }

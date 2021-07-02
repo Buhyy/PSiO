@@ -43,7 +43,7 @@ private:
     float bound_y_top_;
     float bound_y_bottm_;
     bool floor_check_;
-    sf::Texture Texture;
+    sf::Texture Texture,Texture1;
 
     int health_;
     int health_max_;

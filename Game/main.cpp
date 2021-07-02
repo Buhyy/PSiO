@@ -62,18 +62,24 @@ int main()
     std::vector<Room> Rooms;
 
 
-    for(unsigned long long i=0;i<11;i++)
+    for(unsigned long long i=0;i<6;i++)
     {
         if(i==0)
         {
-            Room room1(3);
+            Room room1(2);
             Rooms.emplace_back(room1);
             Rooms[i].set_is_cleared();
         }
+        if(i==5)
+        {
+            Room room1(7);
+            Rooms.emplace_back(room1);
+
+        }
         else
         {
-        int variant=rand() % 3+1;
-        Room room1(variant);
+        int variant=rand() % 6+1;
+        Room room1(variant);//
         Rooms.emplace_back(room1);
         }
     }
@@ -94,22 +100,163 @@ int main()
      }
 player.setObstacleColisions(ObstacleColisions);
 
-   for(unsigned long long i = 0;i<=Rooms.size()-1;i++)
+   for(unsigned long long i = 1;i<=Rooms.size()-1;i++)
    {
-     enemies.emplace_back(std::make_unique<Enemy>());
-     enemies[i*3]->setPosition(200,200);
-     enemies[i*3]->room_number_set(i+1);
-     enemies.emplace_back(std::make_unique<Enemy>());
-     enemies[i*3+1]->setPosition(400,200);
-     enemies[i*3+1]->room_number_set(i+1);
-     enemies.emplace_back(std::make_unique<Enemy>());
-     enemies[i*3+2]->setPosition(300,200);
-     enemies[i*3+2]->room_number_set(i+1);
+       switch(Rooms[i].variant())
+       {
+       case 1:
+       {
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4]->setPosition(32*4,32*7);
+           enemies[(i-1)*4]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+1]->setPosition(32*28,32*7);
+           enemies[(i-1)*4+1]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+2]->setPosition(32*15,32*4);
+           enemies[(i-1)*4+2]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+3]->setPosition(32*15,32*13);
+           enemies[(i-1)*4+3]->room_number_set(i);
+           break;
+       }
+       case 2:
+       {
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4]->setPosition(32*5,32*4);
+           enemies[(i-1)*4]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4+1]->setPosition(32*12,32*4);
+           enemies[(i-1)*4+1]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4+2]->setPosition(32*19,32*4);
+           enemies[(i-1)*4+2]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4+3]->setPosition(32*27,32*4);
+           enemies[(i-1)*4+3]->room_number_set(i);
+           break;
+       }
+       case 3:
+       {
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4]->setPosition(32*5,32*4);
+           enemies[(i-1)*4]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+1]->setPosition(32*14,32*9);
+           enemies[(i-1)*4+1]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+2]->setPosition(32*17,32*9);
+           enemies[(i-1)*4+2]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4+3]->setPosition(32*27,32*4);
+           enemies[(i-1)*4+3]->room_number_set(i);
+           break;
+       }
+       case 4:
+       {
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4]->setPosition(32*5,32*4);
+           enemies[(i-1)*4]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4+1]->setPosition(32*12,32*4);
+           enemies[(i-1)*4+1]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4+2]->setPosition(32*19,32*4);
+           enemies[(i-1)*4+2]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(1));
+           enemies[(i-1)*4+3]->setPosition(32*27,32*4);
+           enemies[(i-1)*4+3]->room_number_set(i);
+           break;
+       }
+       case 5:
+       {
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4]->setPosition(32*4,32*7);
+           enemies[(i-1)*4]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+1]->setPosition(400,200);
+           enemies[(i-1)*4+1]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+2]->setPosition(300,200);
+           enemies[(i-1)*4+2]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+3]->setPosition(200,32*7);
+           enemies[(i-1)*4+3]->room_number_set(i);
+           break;
+       }
+       case 6:
+       {
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4]->setPosition(32*5,32*14);
+           enemies[(i-1)*4]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+1]->setPosition(32*27,32*14);
+           enemies[(i-1)*4+1]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+2]->setPosition(32*15,32*4);
+           enemies[(i-1)*4+2]->room_number_set(i);
+           enemies.emplace_back(std::make_unique<Enemy>(2));
+           enemies[(i-1)*4+3]->setPosition(32*15,32*19);
+           enemies[(i-1)*4+3]->room_number_set(i);
+           break;
+       case 7:
+       {
+           enemies.emplace_back(std::make_unique<Enemy>(3));
+           enemies[(i-1)*4]->setPosition(32*15,32*10);
+           enemies[(i-1)*4]->room_number_set(i);
+           break;
+       }
+       }
+       }
+
+   }
+   for(auto &enemy: enemies)
+   {
+       enemy->setObstacleColisions(ObstacleColisions);
    }
    for(unsigned long long i = 0;i<=Rooms.size()-1;i++)
    {
      chests.emplace_back(std::make_unique<chest>());
-     chests[i]->setPosition(15*32,20*32);
+     switch(Rooms[i].variant())
+     {
+     case 1:
+     {
+         chests[i]->setPosition(15*32,15*32);
+         break;
+     }
+     case 2:
+     {
+         chests[i]->setPosition(15*32,20*32);
+         break;
+     }
+     case 3:
+     {
+         chests[i]->setPosition(15*32,10*32);
+         break;
+     }
+     case 4:
+     {
+         chests[i]->setPosition(17*32,20*32);
+         break;
+     }
+     case 5:
+     {
+         chests[i]->setPosition(15*32,10*32);
+         break;
+     }
+     case 6:
+     {
+         chests[i]->setPosition(15*32,6*32);
+         break;
+     }
+     case 7:
+     {
+         chests[i]->setPosition(15*32,20*32);
+         break;
+     }
+     }
+
+
      chests[i]->room_number_set(i);
     }
        sf::Font arial;
@@ -118,7 +265,7 @@ player.setObstacleColisions(ObstacleColisions);
    for(unsigned long long i = 0;i<=Rooms.size()-1;i++)
    {
      items.emplace_back(std::make_unique<Item>());
-     items[i]->setPosition(chests[i]->getGlobalBounds().left+chests[i]->getGlobalBounds().width/2-items[i]->getGlobalBounds().width/2,18*32);
+     items[i]->setPosition(chests[i]->getGlobalBounds().left+chests[i]->getGlobalBounds().width/2-items[i]->getGlobalBounds().width/2,chests[i]->getGlobalBounds().top-items[i]->getGlobalBounds().height*1.5);
      items[i]->room_number_set(i);
      chests[i]->itemik=*items[i];
      chests[i]->itemik.setPosition(chests[i]->getGlobalBounds().left+chests[i]->getGlobalBounds().width/2,chests[i]->getGlobalBounds().top);
@@ -127,6 +274,7 @@ player.setObstacleColisions(ObstacleColisions);
      chests[i]->itemik.Description.setColor(sf::Color::Black);
      chests[i]->itemik.Description.setFont(arial);
     }
+
     sf::Clock clock;
     float timer_atack=0,imune_time=0;
 
@@ -175,6 +323,10 @@ player.setObstacleColisions(ObstacleColisions);
                                          }
                                   }
                              player.setObstacleColisions(ObstacleColisions);
+                             for(auto &enemy: enemies)
+                             {
+                                 enemy->setObstacleColisions(ObstacleColisions);
+                             }
                                    }
                                 }
                                if(player.getGlobalBounds().left<60)
@@ -200,6 +352,10 @@ player.setObstacleColisions(ObstacleColisions);
                                          }
                                   }
                              player.setObstacleColisions(ObstacleColisions);
+                             for(auto &enemy: enemies)
+                             {
+                                 enemy->setObstacleColisions(ObstacleColisions);
+                             }
                                    }
                                 }
                                 if(chests[Curent_Room_Number]->is_oppened()&& (pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(chests[Curent_Room_Number]->getGlobalBounds().left+(chests[Curent_Room_Number]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(chests[Curent_Room_Number]->getGlobalBounds().top+(chests[Curent_Room_Number]->getGlobalBounds().height/2)),2))<100)
@@ -272,7 +428,7 @@ player.setObstacleColisions(ObstacleColisions);
             {
                 Rooms[Curent_Room_Number].set_is_cleared();
             }
-            if(imune_time==0 && !enemies[i]->is_dead() &&enemies[i]->room_number()==Curent_Room_Number&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(enemies[i]->getGlobalBounds().left+(enemies[i]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(enemies[i]->getGlobalBounds().top+(enemies[i]->getGlobalBounds().height/2)),2))<(enemies[i]->getGlobalBounds().width+enemies[i]->getGlobalBounds().height)*8)
+            if(imune_time==0 && !enemies[i]->is_dead() &&enemies[i]->room_number()==Curent_Room_Number&&(pow(((player.getGlobalBounds().left+(player.getGlobalBounds().width/2))-(enemies[i]->getGlobalBounds().left+(enemies[i]->getGlobalBounds().width/2))),2)+pow((player.getGlobalBounds().top+(player.getGlobalBounds().height/2))-(enemies[i]->getGlobalBounds().top+(enemies[i]->getGlobalBounds().height/2)),2))<(enemies[i]->getGlobalBounds().width+enemies[i]->getGlobalBounds().height)*7)
             {
                 player.get_hurt(enemies[i]->dmg()-enemies[i]->dmg()*player.armour()/100);
                 imune_time+=elapsed.asSeconds();
@@ -328,6 +484,7 @@ player.setObstacleColisions(ObstacleColisions);
                if(enemy->room_number()==Curent_Room_Number && !enemy->is_dead())
                {
                enemy->animate(elapsed);
+               enemy->gravity(elapsed);
                window.draw(*enemy);
                }
            }

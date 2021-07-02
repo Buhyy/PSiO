@@ -7,7 +7,7 @@
 class Enemy : public Character
 {
 public:
-    Enemy();
+    Enemy(int type);
     void setObstacleColisions( std::vector<sf::FloatRect> obstacle_colisions);
     void jump(const sf::Time &elapsed);
     void setTarget(sf::Vector2f Targ);
@@ -20,6 +20,7 @@ public:
     int dmg();
     int health();
     void deal_dmg(int dmg_dealt);
+    bool can_fly();
 private:
     float Time_;
     sf::Vector2f position_;
@@ -30,7 +31,8 @@ private:
     float bound_y_top_;
     float bound_y_bottm_;
     bool floor_check_;
-    sf::Texture Texture;
+    bool fly_;
+    sf::Texture Texture,Texture1;
     sf::Vector2f target;
 
     int health_;
@@ -40,6 +42,7 @@ private:
 
     bool is_dead_;
     unsigned long long room_number_;
+    int variant;
 
 };
 #endif // PLAYERCLASS_H

@@ -7,6 +7,10 @@ PlayerClass::PlayerClass()
     {
         std::cout << "Could not load texture" << std::endl;
     }
+    if (!Texture1.loadFromFile("Patatek2.png"))
+    {
+        std::cout << "Could not load texture" << std::endl;
+    }
     this->setTexture(Texture);
     Time_=0;
     dir_x_=0;
@@ -21,7 +25,7 @@ PlayerClass::PlayerClass()
     health_=health_max_;
     armour_=10;
     speed_=200;
-    dmg_=20;
+    dmg_=200;
     jumps_=2;
 
 }
@@ -123,6 +127,7 @@ void PlayerClass::animate(const sf::Time &elapsed){
     if(dir_x_==1)
     {
         weapon_place_r();
+        this->setTexture(Texture);
          if(rectangle_bounds.left+rectangle_bounds.width>bound_x_right_)
         {
         this->move((float)-speed_*dir_x_*time,0);
@@ -146,6 +151,7 @@ void PlayerClass::animate(const sf::Time &elapsed){
     if(dir_x_==-1)
     {
         weapon_place_l();
+        this->setTexture(Texture1);
         if(rectangle_bounds.left<bound_x_left_)
         {
             this->move((float)-speed_*dir_x_*time,0);

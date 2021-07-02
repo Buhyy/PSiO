@@ -8,7 +8,7 @@ Character::~Character()
 {
 
 }
-void Character::gravity()
+void Character::gravity(const sf::Time &elapsed)
 {
 
 }
@@ -45,6 +45,14 @@ int Character::health()
 
 }
 int Character::dmg()
+{
+
+}
+bool Character::can_fly()
+{
+
+}
+void Character::setObstacleColisions(std::vector<sf::FloatRect> obstacle_colisions)
 {
 
 }
