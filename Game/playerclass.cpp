@@ -21,11 +21,48 @@ PlayerClass::PlayerClass()
     bound_y_bottm_=32*21;
     floor_check_=true;
 
-    health_max_=100;
-    health_=health_max_;
-    armour_=10;
-    speed_=200;
-    dmg_=200;
+    std::fstream odczyt("stats.txt", std::ios::in);
+
+    if(odczyt.good())
+    {
+        if(odczyt.is_open())
+        {
+
+            std::string help;
+            std::string all="";
+            odczyt>>help;
+            all+=help + " ";
+            std::cout<<help<<std::endl;
+            odczyt>>help;
+            all+=help + " ";
+            std::cout<<help<<std::endl;
+            odczyt>>help;
+            all+=help + " ";
+            std::cout<<help<<std::endl;
+            odczyt>>help;
+            all+=help;
+            std::cout<<help<<std::endl;
+            std::stringstream stream(all);
+            stream>>health_max_>>dmg_>>speed_>>armour_;
+            health_=health_max_;
+        }
+    odczyt.close();
+    }
+    else
+    { std::fstream zapis("stats.txt", std::ios::out);
+        health_max_=100;
+        health_=health_max_;
+        armour_=10;
+        speed_=200;
+        dmg_=200;
+
+        if(zapis.is_open())
+        zapis<<health_max_<<std::endl<<dmg_<<std::endl<<speed_<<std::endl<<armour_;
+        zapis.close();
+
+    }
+
+
     jumps_=2;
 
 }

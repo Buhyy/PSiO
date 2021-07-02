@@ -3,9 +3,13 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
+#include<string>
+#include<sstream>
 #include "character.h"
 #include "enemy.h"
 #include "weapon.h"
+
 class PlayerClass : public Character
 {
 public:
